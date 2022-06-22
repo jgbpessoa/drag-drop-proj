@@ -55,6 +55,10 @@ button:active {
   border-color: #a80041;
 }
 
+form {
+  padding-left: 2rem;
+}
+
 .projects {
   margin: 1rem;
   border: 1px solid #ff0062;
