@@ -58,6 +58,48 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   return adjustedDescriptor;
 }
 
+// Render project list
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+
+  constructor(private type: "active" | "finished") {
+    // Selecting template element
+    this.templateElement = document.getElementById(
+      "project-list"
+    )! as HTMLTemplateElement;
+    // Selecting the host element
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    // Importing the node from template
+    // true -> deep clone
+    const importedNode = document.importNode(
+      this.templateElement.content,
+      true
+    );
+
+    // Selecting the form from the imported node
+    this.element = importedNode.firstElementChild as HTMLElement;
+
+    this.element.id = `${this.type}-projects`;
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
+}
+
+// Gather user input and validate it
 class ProjectInput {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
@@ -171,3 +213,5 @@ class ProjectInput {
 }
 
 const projInput = new ProjectInput();
+const activeProjList = new ProjectList("active");
+const finishedProjList = new ProjectList("finished");
