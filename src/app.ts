@@ -44,7 +44,7 @@ class ProjectState extends State<Project> {
 
   addProject(title: string, description: string, people: number) {
     const newProject = new Project(
-      Math.random.toString(),
+      Math.random().toString(),
       title,
       description,
       people,
@@ -168,7 +168,34 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract renderContent(): void;
 }
 
-// Rendering the project lists and items
+// Rendering Single Project
+
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+  get numOfPeople() {
+    return this.project.people > 1
+      ? `${this.project.people} People`
+      : "1 Person";
+  }
+
+  constructor(hostId: string, private project: Project) {
+    super("single-project", hostId, true, project.id);
+
+    this.configure();
+
+    this.renderContent();
+  }
+
+  configure() {}
+
+  renderContent() {
+    this.element.querySelector("h2")!.innerText = this.project.title;
+    this.element.querySelector("h3")!.innerText =
+      this.numOfPeople + " assigned";
+    this.element.querySelector("p")!.innerText = this.project.description;
+  }
+}
+
+// Rendering the project lists
 class ProjectList extends Component<HTMLDivElement, HTMLElement> {
   assignedProjects: Project[];
 
@@ -203,14 +230,10 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
   }
 
   private renderProjects() {
-    const listEl = document.getElementById(
-      `${this.type}-projects-list`
-    )! as HTMLUListElement;
-    listEl.innerHTML = "";
-    for (const prjItem of this.assignedProjects) {
-      const listItem = document.createElement("li");
-      listItem.textContent = prjItem.title;
-      listEl.appendChild(listItem);
+    this.element.querySelector("ul")!.innerHTML = "";
+    console.log(this.element.id);
+    for (const projItem of this.assignedProjects) {
+      new ProjectItem(this.element.querySelector("ul")!.id, projItem);
     }
   }
 }
