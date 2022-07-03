@@ -5,14 +5,14 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server",
+    "start": "webpack-dev-server",
     "build": "webpack"
   },
   "keywords": [
     "typescript",
     "course"
   ],
-  "author": "Maximilian Schwarzmüller",
+  "author": "Jose Pessoa",
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.5.4",

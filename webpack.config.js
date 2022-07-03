@@ -4,11 +4,22 @@
 // Use Node.js module to build an absolute path
 const path = require("path");
 
+// NodeJS export syntax: Of a JS object which is the configuration object picked up by Webpack:
 module.exports = {
+  // This tells webpack that here we are building for development and that will do viewer optimizations to improve our development, make debugging even easier, and give us more meaningful errors
+  mode: "development",
   entry: "./src/app.ts",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+    //Additional configuration that is needed for the Webpack Dev Server to really understand where the output is written to and where this is relative to the index.html file
+    publicPath: "/dist/",
+  },
+  // Dev server config
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "/"),
+    },
   },
   // Make sure you have the sourceMap: true in tsconfig
   // This tells Webpack that there will be generated sourcemaps already, which it should extract and basically wire up correctly to the bundle it generates
